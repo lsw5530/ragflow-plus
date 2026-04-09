@@ -93,24 +93,24 @@ logs-mgmt:
 # ─────────────────────────────────────────────
 .PHONY: urls
 urls:
-	@echo "http://10.101.30.114:80"
-	@echo "http://10.101.30.114:8888"
-	@echo "http://10.101.30.114:5000"
-	@echo "http://10.101.30.114:$(SVR_HTTP_PORT)"
-	@echo "http://10.101.30.114:$(ES_PORT)"
-	@echo "http://10.101.30.114:$(MINIO_CONSOLE_PORT)"
+	@echo "http://10.101.190.97:8100"
+	@echo "http://10.101.190.97:8888"
+	@echo "http://10.101.190.97:5000"
+	@echo "http://10.101.190.97:$(SVR_HTTP_PORT)"
+	@echo "http://10.101.190.97:$(ES_PORT)"
+	@echo "http://10.101.190.97:$(MINIO_CONSOLE_PORT)"
 
 .PHONY: info
 info:
 	@echo "────────────────────────────────────────"
-	@echo "  前台用户系统    http://10.101.30.114:80"
-	@echo "  后台管理系统    http://10.101.30.114:8888"
-	@echo "  管理后端 API    http://10.101.30.114:5000"
-	@echo "  RAGFlow API     http://10.101.30.114:$(SVR_HTTP_PORT)"
-	@echo "  Elasticsearch   http://10.101.30.114:$(ES_PORT)"
-	@echo "  MinIO Console   http://10.101.30.114:$(MINIO_CONSOLE_PORT)"
-	@echo "  MySQL           10.101.30.114:$(MYSQL_PORT)"
-	@echo "  Redis           10.101.30.114:$(REDIS_PORT)"
+	@echo "  前台用户系统    http://10.101.190.97:8100"
+	@echo "  后台管理系统    http://10.101.190.97:8888"
+	@echo "  管理后端 API    http://10.101.190.97:5000"
+	@echo "  RAGFlow API     http://10.101.190.97:$(SVR_HTTP_PORT)"
+	@echo "  Elasticsearch   http://10.101.190.97:$(ES_PORT)"
+	@echo "  MinIO Console   http://10.101.190.97:$(MINIO_CONSOLE_PORT)"
+	@echo "  MySQL           10.101.190.97:$(MYSQL_PORT)"
+	@echo "  Redis           10.101.190.97:$(REDIS_PORT)"
 	@echo "────────────────────────────────────────"
 	@echo "  后台初始账号    admin / 12345678"
 	@echo "────────────────────────────────────────"
