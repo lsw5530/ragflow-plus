@@ -70,8 +70,6 @@ export const useSendMessageWithSse = (url: string = api.writeChat) => {
           signal: controller?.signal || sseRef.current?.signal,
         });
 
-        const res = response.clone().json();
-
         const reader = response?.body
           ?.pipeThrough(new TextDecoderStream())
           .pipeThrough(new EventSourceParserStream())
@@ -105,7 +103,7 @@ export const useSendMessageWithSse = (url: string = api.writeChat) => {
         console.info('done?');
         setDone(true);
         resetAnswer();
-        return { data: await res, response };
+        return { response };
       } catch (e) {
         setDone(true);
         resetAnswer();

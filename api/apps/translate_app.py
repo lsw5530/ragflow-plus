@@ -58,12 +58,17 @@ def load_translation_model():
         return False
 
 def translate_text(text, source_lang="zh", target_lang="en"):
-    """翻译文本"""
+    """翻译文本。若模型未就绪则直接返回原文，避免阻塞请求。"""
     global model, tokenizer
-    
+
     if model is None or tokenizer is None:
+        # 仅当本地模型已存在时才加载，否则直接返回原文避免触发 HuggingFace 下载而挂起
+        MODEL_PATH = os.path.join(os.path.dirname(__file__), "..", "..", "models")
+        if not os.path.exists(MODEL_PATH):
+            logging.warning("Translation model not found at %s, returning original text", MODEL_PATH)
+            return text
         if not load_translation_model():
-            raise Exception("Translation model not available")
+            return text
     
     try:
         # 根据目标语言设置前缀

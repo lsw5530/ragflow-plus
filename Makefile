@@ -19,7 +19,8 @@ help:
 	@echo "  make up          启动所有服务（CPU 模式）"
 	@echo "  make up-gpu      启动所有服务（GPU 模式）"
 	@echo "  make down        停止并移除容器（保留数据卷）"
-	@echo "  make restart     重启所有服务"
+	@echo "  make restart     重建并启动所有服务（应用 compose 配置变更）"
+	@echo "  make recreate svc=<服务名>  强制重建指定服务"
 	@echo "  make stop        暂停所有容器（不删除）"
 	@echo "  make start       恢复已暂停的容器"
 	@echo ""
@@ -65,7 +66,17 @@ start:
 
 .PHONY: restart
 restart:
-	$(COMPOSE) restart
+	$(COMPOSE) up -d
+	@echo ""
+	@$(MAKE) --no-print-directory info
+
+.PHONY: recreate
+recreate:
+	@if [ -z "$(svc)" ]; then \
+		echo "用法: make recreate svc=<服务名>  例: make recreate svc=management-backend"; \
+		exit 1; \
+	fi
+	$(COMPOSE) up -d --force-recreate $(svc)
 	@echo ""
 	@$(MAKE) --no-print-directory info
 

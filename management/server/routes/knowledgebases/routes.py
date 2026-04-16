@@ -242,11 +242,8 @@ def parse_document(doc_id):
         return response
 
     try:
-        result = KnowledgebaseService.parse_document(doc_id)
-        if result.get("success"):
-            return success_response(data={"message": f"文档 {doc_id} 同步解析完成。", "details": result})
-        else:
-            return error_response(result.get("message", "解析失败"), code=500)
+        result = KnowledgebaseService.async_parse_document(doc_id)
+        return success_response(data={"message": result.get("message"), "task_id": result.get("task_id"), "status": result.get("status")})
 
     except Exception as e:
         return error_response(str(e), code=500)

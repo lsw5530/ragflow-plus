@@ -18,21 +18,23 @@ def is_running_in_docker():
 # 根据运行环境选择合适的主机地址和端口
 if is_running_in_docker():
     MINIO_HOST = "minio"
+    MINIO_INTERNAL_PORT = 9000  # Docker 内部 MinIO 始终监听 9000
     MINIO_VISIT_HOST = os.getenv("MINIO_VISIT_HOST", "localhost")
-    MINIO_PORT = int(os.getenv("MINIO_PORT", "9000"))
+    MINIO_PORT = int(os.getenv("MINIO_PORT", "9000"))  # 宿主机对外暴露端口，用于生成访问 URL
 else:
     MINIO_HOST = os.getenv("MINIO_HOST", "localhost")
+    MINIO_INTERNAL_PORT = int(os.getenv("MINIO_PORT", "9000"))
     MINIO_VISIT_HOST = os.getenv("MINIO_VISIT_HOST", "localhost")
     MINIO_PORT = int(os.getenv("MINIO_PORT", "9000"))
 
 
 # MinIO连接配置
 MINIO_CONFIG = {
-    "endpoint": f"{MINIO_HOST}:{MINIO_PORT}",
+    "endpoint": f"{MINIO_HOST}:{MINIO_INTERNAL_PORT}",  # 容器内部连接地址
     "access_key": os.getenv("MINIO_USER", "rag_flow"),
     "secret_key": os.getenv("MINIO_PASSWORD", "infini_rag_flow"),
     "secure": False,
-    "visit_point": f"{MINIO_VISIT_HOST}:{MINIO_PORT}",
+    "visit_point": f"{MINIO_VISIT_HOST}:{MINIO_PORT}",  # 浏览器可访问的外部地址
 }
 
 

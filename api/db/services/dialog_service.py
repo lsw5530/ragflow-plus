@@ -117,12 +117,13 @@ def chat(dialog, messages, stream=True, **kwargs):
     check_llm_ts = timer()
 
     kbs = KnowledgebaseService.get_by_ids(dialog.kb_ids)
-    embedding_list = list(set([kb.embd_id for kb in kbs]))
-    if len(embedding_list) != 1:
+    # 去除厂商后缀（如 model@Vendor）后再比较，与 dialog_app.py 保持一致
+    embd_base_ids = list(set([TenantLLMService.split_model_name_and_factory(kb.embd_id)[0] for kb in kbs]))
+    if len(embd_base_ids) != 1:
         yield {"answer": "**ERROR**: Knowledge bases use different embedding models.", "reference": []}
         return {"answer": "**ERROR**: Knowledge bases use different embedding models.", "reference": []}
 
-    embedding_model_name = embedding_list[0]
+    embedding_model_name = kbs[0].embd_id  # 使用完整名称（含厂商后缀）初始化 LLMBundle
 
     retriever = settings.retrievaler
 

@@ -217,11 +217,14 @@ class QWenCV(Base):
         ]
 
     def chat_prompt(self, text, b64):
-        return [
-            {"image": f"{b64}"},
-            {"text": text},
-        ]
-    
+        # 没有图片时只传文本，避免向 DashScope 发送空 image URL 导致 url error
+        if b64:
+            return [
+                {"image": f"{b64}"},
+                {"text": text},
+            ]
+        return [{"text": text}]
+
     def describe(self, image, max_tokens=300):
         from http import HTTPStatus
         from dashscope import MultiModalConversation
